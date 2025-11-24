@@ -1,3 +1,28 @@
+/* --- Root Variables for Theming --- */
+:root {
+  --background-color: #f7f7f7;
+  --text-color: #333;
+  --form-bg: #ffffff;
+  --input-border: #ccc;
+  --input-bg: #fff;
+  --button-bg: #007bff;
+  --button-hover-bg: #0056b3;
+}
+
+/* Dark mode variables (Example of how dark mode might be handled) */
+body.dark,
+html.dark {
+  --background-color: #1a1a1a;
+  --text-color: #f7f7f7;
+  --form-bg: #2d2d2d;
+  --input-border: #555;
+  --input-bg: #3c3c3c;
+  --button-bg: #4a90e2;
+  --button-hover-bg: #357bd8;
+}
+
+/* --- InstructorsList Component Global Styles --- */
+
 .App-header2 {
   background-color: var(--background-color);
   min-height: 30vh;
@@ -34,6 +59,8 @@
   color: var(--text-color);
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* Set position relative for legend absolute positioning */
+  position: relative;
 }
 
 .instructors-list h2 {
@@ -46,6 +73,41 @@
   margin-bottom: 20px;
   font-weight: bold;
 }
+
+/* --- Legend Styling --- */
+.availability-legend {
+  position: absolute;
+  /* Position relative to .instructors-list */
+  top: 10px;
+  /* Adjust as needed */
+  right: 10px;
+  /* Place on the top right */
+  font-size: 12px;
+  padding: 8px;
+  background-color: var(--form-bg);
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  /* Ensure it floats above other content */
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+  gap: 5px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Dots inherit the colors from the indicator classes below */
+
+/* --- Instructor List and Item Styles --- */
 
 .instructors-list ul {
   list-style: none;
@@ -115,6 +177,9 @@
   background-color: var(--button-hover-bg);
 }
 
+/* --- Availability Indicator Styles (Used for both profiles and legend) --- */
+
+/* Base style for the small indicator dot on the profile image */
 .indicator {
   position: absolute;
   bottom: 5px;
@@ -126,17 +191,21 @@
   box-sizing: border-box;
 }
 
-.indicator.inside {
+/* Color classes for both the profile indicator and the legend dots */
+.indicator.inside,
+.legend-dot.inside {
   background-color: #4CAF50;
   /* Green */
 }
 
-.indicator.outside {
+.indicator.outside,
+.legend-dot.outside {
   background-color: #F44336;
   /* Red */
 }
 
-.indicator.in-class {
+.indicator.in-class,
+.legend-dot.in-class {
   background-color: #ffc107;
-  /* Blue */
+  /* Orange/Yellow */
 }

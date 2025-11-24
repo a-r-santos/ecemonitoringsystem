@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-// Make sure this path is correct for your project
 import { supabase } from '../API/supabaseClient';
 import '../CSS/InstructorsList.css';
-import profileImg from '../Images/profile.png';
+// REMOVE THIS LINE: import profileImg from '../Images/profile.png';
 import logo from '../Images/logo.png';
+
+// Import a local placeholder or define a default image URL if needed
+// For simplicity, we'll use a local image (if you keep it) OR a generic placeholder URL
+const DEFAULT_PROFILE_IMG = '/path/to/default/placeholder.png'; // Adjust this path if you want a local default
 
 function InstructorsList() {
   const navigate = useNavigate();
@@ -12,8 +15,6 @@ function InstructorsList() {
 
   // Get the full student object from location.state
   const { state } = location;
-  // This line correctly looks for a 'student' object inside the state
-  // This was passed from your Student.js form
   const student = state?.student;
 
   // Use state to hold the instructors list from Supabase
@@ -66,8 +67,7 @@ function InstructorsList() {
     });
   };
 
-  // --- Guard clause if student info is missing ---
-  // If 'student' wasn't passed correctly in the state, this will show
+  // --- Guard clause if student info is missing (unchanged) ---
   if (!student) {
     return (
       <div className="instructors-list" style={{ textAlign: 'center', padding: '2rem' }}>
@@ -90,12 +90,26 @@ function InstructorsList() {
         <img src={logo} className="App-logo2" alt="logo" />
       </header>
 
-      {/* This is the correct line. It looks for 'student.student_name'.
-        If it's showing "Student", it means 'student.student_name' was empty
-        or the Student.js form is not sending the data correctly.
-      */}
       <h2>Hi, {student?.name || 'Student'}!</h2>
       <p>Available Instructors</p>
+
+      {/* --- NEW LEGEND COMPONENT (unchanged) --- */}
+      <div className="availability-legend">
+        <div className="legend-item">
+          <span className="legend-dot inside"></span>
+          <span>Inside Office (Present)</span>
+        </div>
+        <div className="legend-item">
+          <span className="legend-dot in-class"></span>
+          <span>In Class</span>
+        </div>
+        <div className="legend-item">
+          <span className="legend-dot outside"></span>
+          <span>Outside Office (Absent)</span>
+        </div>
+      </div>
+      {/* --- END NEW LEGEND COMPONENT --- */}
+
       <ul>
         {/* Map over the 'instructors' state from Supabase */}
         {instructors.map((instructor) => (
@@ -105,18 +119,21 @@ function InstructorsList() {
               className="instructor-box-button"
             >
               <div className="profile-image-container">
+                {/* START: The critical change is here */}
                 <img
-                  src={profileImg}
-                  alt="Profile"
+                  // Use the profile_image_url from the instructor object,
+                  // falling back to a default if it's null or undefined.
+                  src={instructor.profile_image_url || DEFAULT_PROFILE_IMG}
+                  alt={`Profile of ${instructor.name}`}
                   className="instructor-profile"
                 />
-                {/* --- THIS IS THE CORRECTED BLOCK --- */}
+                {/* END: The critical change is here */}
                 <span
                   className={`indicator ${instructor.availability === 'in_office'
-                    ? 'inside' // Green dot
+                    ? 'inside'
                     : instructor.availability === 'in_class'
-                      ? 'in-class' // Yellow dot
-                      : 'outside' // Red dot (for 'absent')
+                      ? 'in-class'
+                      : 'outside'
                     }`}
                   title={
                     instructor.availability === 'in_office'
@@ -126,7 +143,6 @@ function InstructorsList() {
                         : 'Absent'
                   }
                 ></span>
-                {/* --- END CORRECTED BLOCK --- */}
               </div>
               <div className="instructor-info">
                 <strong>{instructor.name}</strong>

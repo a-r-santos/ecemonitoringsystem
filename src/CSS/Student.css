@@ -1,3 +1,39 @@
+/* --- Root Variables for Theming --- */
+:root {
+  --background-color: #f7f7f7;
+  --text-color: #333;
+  --form-bg: #ffffff;
+  --input-border: #ccc;
+  --input-bg: #fff;
+  --button-bg: #007bff;
+  --button-hover-bg: #0056b3;
+  --date-icon-filter: none;
+  /* Define default arrow color (black) */
+  --select-arrow-color: #333;
+}
+
+/* Dark mode variables (Example of how dark mode might be handled) */
+body.dark,
+html.dark {
+  --background-color: #1a1a1a;
+  --text-color: #f7f7f7;
+  --form-bg: #2d2d2d;
+  --input-border: #555;
+  --input-bg: #3c3c3c;
+  --button-bg: #4a90e2;
+  --button-hover-bg: #357bd8;
+  --date-icon-filter: invert(1) brightness(0.8);
+  /* Define dark mode arrow color (white/light) */
+  --select-arrow-color: #f7f7f7;
+}
+
+/* --- Student Component Global Styles --- */
+
+.Student {
+  min-height: 100vh;
+  background-color: var(--background-color);
+}
+
 .App-header1 {
   background-color: var(--background-color);
   min-height: 40vh;
@@ -47,6 +83,8 @@
   /* space below header */
 }
 
+/* --- Form Specific Styles --- */
+
 /* Form styling */
 .student-form {
   display: flex;
@@ -60,7 +98,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Each form group stacks label above input */
+/* Each form group stacks label above input/select */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -74,8 +112,9 @@
   color: inherit;
 }
 
-/* Input styling */
-.form-group input {
+/* Input and Select styling - Updated to include 'select' */
+.form-group input,
+.form-group select {
   padding: 10px;
   font-size: 16px;
   border: 1.5px solid var(--input-border);
@@ -88,7 +127,33 @@
   box-sizing: border-box;
 }
 
-.form-group input:focus {
+/* Select-specific styling for the custom arrow */
+.form-group select {
+  height: 40px;
+  /* 1. Remove native arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* 2. Add custom SVG arrow as background image */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23333'%3E%3Cpath d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  /* 3. Add padding to prevent text from overlapping the arrow */
+  padding-right: 30px;
+  /* 4. Use filter to change arrow color based on theme variable */
+  filter: drop-shadow(0 0 0 var(--select-arrow-color));
+}
+
+/* Dark mode adjustment for the SVG arrow color */
+body.dark .form-group select,
+html.dark .form-group select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23f7f7f7'%3E%3Cpath d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z'/%3E%3C/svg%3E");
+}
+
+/* Focus styling for input and select - Updated to include 'select' */
+.form-group input:focus,
+.form-group select:focus {
   border-color: var(--button-bg);
 }
 
@@ -102,17 +167,6 @@
   cursor: pointer;
   filter: var(--date-icon-filter, none);
   transition: filter 0.3s ease;
-}
-
-/* Default (light mode) icon filter */
-:root {
-  --date-icon-filter: none;
-}
-
-/* Dark mode icon filter */
-body.dark,
-html.dark {
-  --date-icon-filter: invert(1) brightness(0.8);
 }
 
 /* Submit button styling - smaller size */

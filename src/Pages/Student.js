@@ -13,6 +13,15 @@ function Student() {
     navigate('/instructors-list', { state: { student: data } });
   };
 
+  // Function to allow only numeric input (0-9)
+  const numericOnly = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    // Check if the pressed key is NOT a digit (0-9)
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+    }
+  };
+
   return (
     <div className="Student">
       <header className="App-header1">
@@ -26,6 +35,20 @@ function Student() {
         </div>
 
         <form className="student-form" onSubmit={handleSubmit(onSubmit)}>
+
+          <div className="form-group">
+            <label htmlFor="student_id">Student ID Number</label>
+            <input
+              {...register("student_id", { required: true, pattern: /^\d+$/ })}
+              type="text"
+              id="student_id"
+              name="student_id" // MATCHES SUPABASE COLUMN
+              placeholder="Student ID Number"
+              pattern="[0-9]*"
+              onKeyPress={numericOnly}
+            />
+          </div>
+
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input
@@ -36,16 +59,25 @@ function Student() {
               placeholder="Full Name"
             />
           </div>
+
+          {/* Year Level Dropdown */}
           <div className="form-group">
-            <label htmlFor="yearSection">Year & Section</label>
-            <input
-              {...register("yearSection", { required: true })}
-              type="text"
-              id="yearSection"
-              name="yearSection"
-              placeholder="Year & Section (e.g., 3-1)"
-            />
+            <label htmlFor="yearLevel">Year Level</label>
+            <select
+              {...register("yearLevel", { required: true })}
+              id="yearLevel"
+              name="yearLevel"
+            >
+              <option value="">Select Year Level</option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
+              <option value="5th Year">5th Year</option>
+              <option value="Irregular">Irregular</option>
+            </select>
           </div>
+
           <div className="form-group">
             <label htmlFor="program">Program</label>
             <input
@@ -66,6 +98,19 @@ function Student() {
               placeholder="Email"
             />
           </div>
+
+          <div className="form-group">
+            <label htmlFor="mobile_number">Mobile Number</label>
+            <input
+              {...register("mobile_number", { required: true })}
+              type="tel"
+              id="mobile_number"
+              name="mobile_number" // MATCHES SUPABASE COLUMN
+              placeholder="Mobile Number"
+              onKeyPress={numericOnly}
+            />
+          </div>
+
           <button type="submit">Submit</button>
         </form>
       </div>
