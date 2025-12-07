@@ -22,6 +22,7 @@
   --button-border: #555;
   /* Lighter border for dark mode */
   --light-input-bg: #343a40;
+  --dark-input-bg: #2c2c2c;
   --input-border-color: #495057;
 }
 
@@ -77,14 +78,12 @@
   width: 100%;
 }
 
-/* --- ADJUSTED: Reverting logo size to original --- */
+/* --- LOGO --- */
 .dashboard-logo {
   height: 25vmin;
-  /* Reverted to 25vmin (original size) */
   max-height: 200px;
   pointer-events: none;
   margin-bottom: 3rem;
-  /* ***ADJUSTMENT: Increased margin-bottom to push the profile section down*** */
   animation: App-logo-spin infinite 20s linear;
 }
 
@@ -110,7 +109,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* margin-bottom is handled by h1 margin-top */
 }
 
 .avatar-wrapper {
@@ -120,13 +118,12 @@
   margin-bottom: 10px;
 }
 
-/* ADDED: Placeholder Style for when no image is uploaded */
+/* Placeholder Style for when no image is uploaded */
 .dashboard-avatar-placeholder {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   border: 4px dashed var(--button-border, #ccc);
-  /* Dashed border to indicate empty slot */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   background-color: #e0e0e0;
   display: flex;
@@ -146,8 +143,6 @@
   border: 4px dashed #6c757d;
   color: #f0f0f0;
 }
-
-/* END ADDED STYLES */
 
 .dashboard-avatar {
   width: 100%;
@@ -201,7 +196,6 @@
   justify-content: center;
   gap: 1rem;
   margin-bottom: 2rem;
-  /* Reduced margin to make space for remarks */
 }
 
 .status-btn {
@@ -224,7 +218,7 @@
 
 .status-btn.in-class {
   background-color: #ffc107;
-  /* Yellow */
+  /* Yellow - This is the target color for pending */
   color: #212529;
   /* Dark text for yellow button */
 }
@@ -240,7 +234,7 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* --- UPDATED: Remarks Section Styles --- */
+/* --- Remarks Section Styles --- */
 .remarks-section {
   width: 100%;
   max-width: 500px;
@@ -276,22 +270,17 @@
   border-color: var(--input-border-color);
 }
 
-/* Styles for when the textarea is editable */
 .remarks-textarea:not(:disabled):focus {
   outline: none;
   border-color: var(--focus-color);
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-/* Styles for when the textarea is read-only */
 .remarks-textarea:disabled {
   opacity: 1;
-  /* Not dimmed */
   cursor: default;
   background-color: #e9ecef;
-  /* Slightly different background for disabled state */
   border-style: dashed;
-  /* Optional: Hint it's read-only */
 }
 
 .dark .remarks-textarea:disabled {
@@ -299,7 +288,7 @@
 }
 
 
-/* NEW: Remarks Actions and Buttons */
+/* Remarks Actions and Buttons */
 .remarks-actions {
   display: flex;
   justify-content: flex-end;
@@ -338,19 +327,8 @@
 
 .remarks-save-btn:disabled {
   background-color: #90baf7;
-  /* Lighter blue when saving */
   cursor: not-allowed;
 }
-
-/* --- Appointments Section (Rest of CSS is unchanged) --- */
-.appointments-section {
-  width: 100%;
-  max-width: 800px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ... (rest of the unchanged CSS) ... */
 
 /* --- Appointments Section --- */
 .appointments-section {
@@ -405,37 +383,103 @@
   background-color: var(--background-color, #ffffff);
 }
 
+/* Status Colors for Appointment Items */
 .appointment-item.pending {
-  background-color: #fefce8;
-  border-color: #fde047;
+  background-color: #ffc107;
+  border-color: #e0a800;
+  color: #212529;
 }
 
 .appointment-item.pending:hover {
-  background-color: #fef9c3;
+  background-color: #e0a800;
 }
 
 .appointment-item.read {
-  background-color: #f0fdf4;
-  border-color: #86efac;
+  background-color: #ffecb3;
+  border-color: #fcd34d;
+  color: #212529;
 }
 
 .appointment-item.read:hover {
-  background-color: #dcfce7;
+  background-color: #ffe8a1;
 }
 
+.appointment-item.awaiting_response {
+  background-color: #007bff40;
+  border-color: #007bff;
+  color: var(--text-color);
+}
+
+.appointment-item.awaiting_response:hover {
+  background-color: #007bff50;
+}
+
+.appointment-item.awaiting_rejection {
+  background-color: #dc354540;
+  border-color: #dc3545;
+  color: var(--text-color);
+}
+
+.appointment-item.awaiting_rejection:hover {
+  background-color: #dc354550;
+}
+
+.appointment-item.approved {
+  background-color: #d1e7dd;
+  border-color: #a3cfb5;
+}
+
+.appointment-item.approved:hover {
+  background-color: #c8e5d2;
+}
+
+.appointment-item.not_approved {
+  background-color: #f8d7da;
+  border-color: #f1aeb5;
+}
+
+.appointment-item.not_approved:hover {
+  background-color: #f6ced3;
+}
+
+/* Dark Mode Overrides for Appointment Items */
 .dark .appointment-item {
   background-color: #495057;
   border-color: #6c757d;
 }
 
 .dark .appointment-item.pending {
-  background-color: #4f460a;
-  border-color: #713f12;
+  background-color: #9d7b0f;
+  border-color: #e0a800;
+  color: #f8f9fa;
 }
 
 .dark .appointment-item.read {
-  background-color: #14532d;
-  border-color: #166534;
+  background-color: #7b6417;
+  border-color: #9d7b0f;
+  color: #f8f9fa;
+}
+
+.dark .appointment-item.awaiting_response {
+  background-color: #0056b3;
+  border-color: #007bff;
+  color: #f8f9fa;
+}
+
+.dark .appointment-item.awaiting_rejection {
+  background-color: #88222a;
+  border-color: #dc3545;
+  color: #f8f9fa;
+}
+
+.dark .appointment-item.approved {
+  background-color: #0c3e1e;
+  border-color: #198754;
+}
+
+.dark .appointment-item.not_approved {
+  background-color: #58151c;
+  border-color: #dc3545;
 }
 
 .appointment-info {
@@ -462,85 +506,324 @@
 }
 
 .modal-content {
-  background-color: var(--background-color, #ffffff);
-  color: var(--text-color, #000000);
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  padding: 1.5rem;
+  background-color: var(--background-color);
+  padding: 2rem;
+  border-radius: 10px;
   width: 90%;
-  max-width: 420px;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   position: relative;
 }
 
 .modal-content h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-top: 0;
+  border-bottom: 2px solid var(--button-border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
 }
 
 .modal-content p {
   margin-bottom: 0.5rem;
-  line-height: 1.5;
-}
-
-.modal-content p strong {
-  font-weight: 600;
   color: var(--text-color);
 }
 
-.modal-status-text {
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-  text-transform: capitalize;
-}
-
-.modal-status-text .pending {
-  color: #ca8a04;
-  font-weight: 600;
-}
-
-.modal-status-text .read {
-  color: #16a34a;
-  font-weight: 600;
+.modal-content strong {
+  font-weight: 700;
 }
 
 .modal-close-btn-x {
   position: absolute;
-  top: 0.5rem;
-  right: 0.75rem;
+  top: 10px;
+  right: 10px;
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #6b7280;
   cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.6;
 }
 
 .modal-close-btn-x:hover {
-  color: #000000;
+  opacity: 1;
 }
 
-.dark .modal-close-btn-x {
-  color: #9ca3af;
+.modal-status-text {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
-.dark .modal-close-btn-x:hover {
-  color: #ffffff;
+.modal-status-text span {
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin-left: 0.5rem;
 }
+
+/* MODAL Status Badges */
+
+.modal-status-text .pending,
+.modal-status-text .read {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.modal-status-text .awaiting_response {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-status-text .awaiting_rejection {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-status-text .approved {
+  background-color: #28a745;
+  color: white;
+}
+
+.modal-status-text .not_approved {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* --- Reply Section & Input Styles --- */
 
 .modal-actions {
-  margin-top: 1rem;
-  text-align: right;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--button-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
+/* Subject Input */
+.reply-subject-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--input-border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: var(--light-input-bg);
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 1rem;
+}
+
+/* Reply Textbox (Email Body) */
+.reply-textbox {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--input-border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 120px;
+  box-sizing: border-box;
+  background-color: var(--light-input-bg);
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 1rem;
+}
+
+.dark .reply-subject-input,
+.dark .reply-textbox {
+  background-color: var(--dark-input-bg);
+  border-color: var(--input-border-color);
+  color: var(--text-color);
+}
+
+/* Focus State */
+.reply-subject-input:focus,
+.reply-textbox:focus {
+  outline: none;
+  border-color: var(--focus-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* --- Modal Action Buttons (Final Design) --- */
+.modal-actions-group {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+
+.modal-action-btn,
+.modal-close-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s, box-shadow 0.2s;
+}
+
+/* GREEN for Approve */
+.modal-approve-btn {
+  background-color: #28a745;
+  /* Green */
+  color: white;
+  font-weight: 700;
+  border: 1px solid #1e7e34;
+}
+
+.modal-approve-btn:hover:not(:disabled) {
+  background-color: #1e7e34;
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+}
+
+/* RED for Not Approve/Reject */
+.modal-reject-btn {
+  background-color: #dc3545;
+  /* Red */
+  color: white;
+  font-weight: 700;
+  border: 1px solid #c82333;
+}
+
+.modal-reject-btn:hover:not(:disabled) {
+  background-color: #c82333;
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+}
+
+/* Disabled state styling */
+.modal-action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Gray Close Button */
 .modal-close-btn {
   background-color: #6c757d;
   color: white;
-  padding: 0.5rem 0.75rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 .modal-close-btn:hover {
   background-color: #5a6268;
+}
+
+/* Message when transaction is completed (Final Styling) */
+.transaction-completed-message {
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  text-align: center;
+  flex-grow: 1;
+  border: 1px solid transparent;
+
+  /* Default/Neutral State - for light mode or non-action statuses */
+  background-color: var(--button-border);
+  color: var(--text-color);
+}
+
+/* 🟢 APPROVED Status Styling (Light Mode) */
+.transaction-completed-message.approved {
+  background-color: #d1e7dd;
+  /* Light green background */
+  color: #0f5132;
+  /* Dark green text */
+  border-color: #badbcc;
+  /* Green border */
+}
+
+/* 🔴 NOT APPROVED Status Styling (Light Mode) */
+.transaction-completed-message.not_approved {
+  background-color: #f8d7da;
+  /* Light red background */
+  color: #842029;
+  /* Dark red text */
+  border-color: #f5c2c7;
+  /* Red border */
+}
+
+/* --- Status Text inside the Action Completed Box --- */
+.transaction-completed-message .action-status-text {
+  /* Default text color for the bolded text */
+  color: inherit;
+}
+
+/* 🟢 FIX: Dark Mode APPROVED Status Styling (More Specific) */
+.dark .transaction-completed-message.approved {
+  background-color: #1a4726;
+  /* Darker green background */
+  color: #92e0a2;
+  /* Lighter green text */
+  border-color: #2e6f42;
+}
+
+/* 🔴 FIX: Dark Mode NOT APPROVED Status Styling (More Specific) */
+.dark .transaction-completed-message.not_approved {
+  background-color: #58151c;
+  /* Darker red background */
+  color: #ff9999;
+  /* Lighter red text */
+  border-color: #842029;
+}
+
+/* Dark Mode Overrides for Completed Message (Neutral/Fallback) */
+.dark .transaction-completed-message {
+  /* Default gray background for non-approved statuses in dark mode */
+  background-color: #495057;
+  color: var(--text-color);
+  border-color: #6c757d;
+}
+
+/* Dark Mode Text Overrides for Status Text (Ensuring high contrast) */
+.dark .transaction-completed-message.approved .action-status-text {
+  color: #92e0a2;
+  /* Lighter green text */
+}
+
+.dark .transaction-completed-message.not_approved .action-status-text {
+  color: #ff9999;
+  /* Lighter red text */
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-content {
+    padding: 0 0.5rem;
+  }
+
+  .status-controls {
+    gap: 0.5rem;
+  }
+
+  .status-btn {
+    min-width: unset;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+
+  .appointments-list-box {
+    padding: 0.5rem;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-actions-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-action-btn,
+  .modal-close-btn {
+    width: 100%;
+    margin-bottom: 5px;
+  }
 }
