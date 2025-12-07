@@ -23,6 +23,11 @@ function Dashboard() {
   const [showModal, setShowModal] = useState(false);
   const [activeStatus, setActiveStatus] = useState('in_office');
 
+  // UPDATED STATES for remarks
+  const [remarks, setRemarks] = useState('');
+  const [isRemarksSaving, setIsRemarksSaving] = useState(false);
+  const [isRemarksEditing, setIsRemarksEditing] = useState(false); // NEW STATE for edit/save mode
+
   // --- Image Upload States ---
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -73,10 +78,11 @@ function Dashboard() {
 
     setInstructor(instrData);
     setActiveStatus(instrData.availability || "in_office");
+    // Initialize remarks state from DB
+    setRemarks(instrData.remarks || "");
 
     // Set the avatar URL only if a profile_image_url exists in the DB
     if (instrData.profile_image_url) {
-      // NOTE: Using a timestamp or cache-buster prevents old images from being displayed due to browser caching
       const urlWithCacheBuster = `${instrData.profile_image_url}?t=${Date.now()}`;
       setAvatarUrl(urlWithCacheBuster);
     }
@@ -99,6 +105,36 @@ function Dashboard() {
     }
     setAppointments(data || []);
   }
+
+  // UPDATED: Function to save remarks to DB
+  const saveRemarksToDB = async () => {
+    if (!instructor) return;
+    if (isRemarksSaving) return;
+
+    setIsRemarksEditing(false); // Exit editing mode
+    setIsRemarksSaving(true);
+
+    const { error } = await supabase
+      .from("instructors")
+      .update({ remarks: remarks.trim() })
+      .eq("id", instructor.id);
+
+    setIsRemarksSaving(false);
+
+    if (error) {
+      console.error("Error updating remarks:", error);
+      toast.error("Failed to save remarks.");
+      // OPTIONAL: Revert remarks state to the last saved state or instructor.remarks
+    } else {
+      toast.success("Remarks saved!");
+    }
+  }
+
+  // NEW: Function to toggle editing mode
+  const startEditRemarks = () => {
+    setIsRemarksEditing(true);
+  };
+
 
   // NEW: Function to delete the old image file
   async function deleteOldAvatar(oldUrl) {
@@ -124,7 +160,7 @@ function Dashboard() {
   }
 
 
-  // --- Handle Image Upload (Updated) ---
+  // --- Handle Image Upload (Unchanged) ---
   const uploadAvatar = async (event) => {
     try {
       setUploading(true);
@@ -182,7 +218,7 @@ function Dashboard() {
     }
   };
 
-  // ... (CORE FUNCTIONS unchanged)
+  // ... (Other Core Functions unchanged)
   async function handleStatusChange(newStatus) {
     if (!instructor) return;
     setActiveStatus(newStatus);
@@ -221,7 +257,7 @@ function Dashboard() {
     navigate('/instructor');
   };
 
-  // 3. RENDER LOGIC (Unchanged from the previous fix)
+  // 3. RENDER LOGIC
   if (!instructor) return <div className="dashboard-loading">Loading...</div>;
 
   if (!instructor.verified) {
@@ -244,24 +280,16 @@ function Dashboard() {
       <main className="dashboard-content">
         <img src={logo} className="dashboard-logo" alt="logo" />
 
-        {/* --- Profile Picture and Upload Section --- */}
+        {/* --- Profile Picture Section (Unchanged) --- */}
         <div className="profile-section">
           <div className="avatar-wrapper">
             {avatarUrl ? (
-              // Renders the uploaded image
-              <img
-                src={avatarUrl}
-                alt="Profile"
-                className="dashboard-avatar"
-              />
+              <img src={avatarUrl} alt="Profile" className="dashboard-avatar" />
             ) : (
-              // Renders a placeholder when no image is uploaded
               <div className="dashboard-avatar-placeholder">
                 {uploading ? 'Uploading...' : 'Click 📷 to Upload'}
               </div>
             )}
-
-            {/* The upload control must always be available */}
             <label htmlFor="avatar-upload" className="upload-icon-btn" title="Change Profile Picture">
               {uploading ? '...' : '📷'}
             </label>
@@ -281,7 +309,40 @@ function Dashboard() {
         <div className="status-controls">
           <button className={`status-btn inside ${activeStatus === 'in_office' ? 'active' : ''}`} onClick={() => handleStatusChange('in_office')}>Inside Office</button>
           <button className={`status-btn in-class ${activeStatus === 'in_class' ? 'active' : ''}`} onClick={() => handleStatusChange('in_class')}>In Class</button>
-          <button className={`status-btn absent ${activeStatus === 'absent' ? 'active' : ''}`} onClick={() => handleStatusChange('absent')}>Absent</button>
+          {/* UPDATED TEXT HERE */}
+          <button className={`status-btn absent ${activeStatus === 'absent' ? 'active' : ''}`} onClick={() => handleStatusChange('absent')}>Not Available</button>
+        </div>
+
+        {/* UPDATED: Remarks Text Box with Edit/Save Logic */}
+        <div className="remarks-section">
+          <label htmlFor="instructor-remarks">Custom Status/Remarks:</label>
+          <textarea
+            id="instructor-remarks"
+            className="remarks-textarea"
+            value={remarks}
+            onChange={(e) => setRemarks(e.target.value)}
+            placeholder="e.g. 'Back in 10 mins', 'Meeting until 4 PM', or clear for no remark."
+            maxLength={100}
+            disabled={!isRemarksEditing || isRemarksSaving} // Disabled unless editing or saving
+          />
+          <div className="remarks-actions">
+            {isRemarksEditing ? (
+              <button
+                className="remarks-save-btn"
+                onClick={saveRemarksToDB}
+                disabled={isRemarksSaving}
+              >
+                {isRemarksSaving ? 'Saving...' : 'Save Remarks'}
+              </button>
+            ) : (
+              <button
+                className="remarks-edit-btn"
+                onClick={startEditRemarks}
+              >
+                Edit Remarks
+              </button>
+            )}
+          </div>
         </div>
 
         <section className="appointments-section">
@@ -303,7 +364,7 @@ function Dashboard() {
         </section>
       </main>
 
-      {/* MODAL */}
+      {/* MODAL (Unchanged) */}
       {showModal && selectedAppointment && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
@@ -313,7 +374,7 @@ function Dashboard() {
             <p><strong>Mobile No.:</strong> {selectedAppointment.mobile_number || 'N/A'}</p>
             <p><strong>Email:</strong> {selectedAppointment.student_email}</p>
             <p><strong>Program:</strong> {selectedAppointment.student_program}</p>
-            <p><strong>Year Level:</strong> {selectedAppointment.student_year_level || 'N/A'}</p>
+            <p><strong>Year Level:</strong> {selectedAppointment.appointment_time}</p>
             <p><strong>Date:</strong> {selectedAppointment.appointment_date}</p>
             <p><strong>Time:</strong> {selectedAppointment.appointment_time}</p>
             <p><strong>Reason:</strong> {selectedAppointment.reason || "No reason provided"}</p>
@@ -328,7 +389,5 @@ function Dashboard() {
     </div>
   );
 }
-
-
 
 export default Dashboard;

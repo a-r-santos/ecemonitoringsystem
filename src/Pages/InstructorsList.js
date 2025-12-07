@@ -105,7 +105,7 @@ function InstructorsList() {
         </div>
         <div className="legend-item">
           <span className="legend-dot outside"></span>
-          <span>Outside Office (Absent)</span>
+          <span>Outside Office (Not Available)</span>
         </div>
       </div>
       {/* --- END NEW LEGEND COMPONENT --- */}
