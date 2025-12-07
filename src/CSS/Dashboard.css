@@ -7,6 +7,10 @@
   /* Dark text for light mode */
   --button-border: #ccc;
   /* Default border for buttons/boxes */
+  --light-input-bg: #fff;
+  --dark-input-bg: #2c2c2c;
+  --input-border-color: #ced4da;
+  --focus-color: #007bff;
 }
 
 /* Dark mode styles - make sure to toggle a 'dark' class on your body/html */
@@ -17,6 +21,8 @@
   /* Light text */
   --button-border: #555;
   /* Lighter border for dark mode */
+  --light-input-bg: #343a40;
+  --input-border-color: #495057;
 }
 
 
@@ -194,7 +200,8 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+  /* Reduced margin to make space for remarks */
 }
 
 .status-btn {
@@ -224,7 +231,7 @@
 
 .status-btn.absent {
   background-color: #dc3545;
-  /* Red */
+  /* Red - Now represents "Not Available" */
 }
 
 .status-btn.active {
@@ -232,6 +239,118 @@
   transform: scale(1.05);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
+
+/* --- UPDATED: Remarks Section Styles --- */
+.remarks-section {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 3rem;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.remarks-section label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.remarks-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--input-border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 80px;
+  box-sizing: border-box;
+  background-color: var(--light-input-bg);
+  color: var(--text-color);
+  transition: border-color 0.2s;
+}
+
+.dark .remarks-textarea {
+  background-color: var(--dark-input-bg);
+  border-color: var(--input-border-color);
+}
+
+/* Styles for when the textarea is editable */
+.remarks-textarea:not(:disabled):focus {
+  outline: none;
+  border-color: var(--focus-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Styles for when the textarea is read-only */
+.remarks-textarea:disabled {
+  opacity: 1;
+  /* Not dimmed */
+  cursor: default;
+  background-color: #e9ecef;
+  /* Slightly different background for disabled state */
+  border-style: dashed;
+  /* Optional: Hint it's read-only */
+}
+
+.dark .remarks-textarea:disabled {
+  background-color: #343a40;
+}
+
+
+/* NEW: Remarks Actions and Buttons */
+.remarks-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.remarks-edit-btn,
+.remarks-save-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.remarks-edit-btn {
+  background-color: #6c757d;
+  /* Gray for Edit */
+  color: white;
+}
+
+.remarks-edit-btn:hover {
+  background-color: #5a6268;
+}
+
+.remarks-save-btn {
+  background-color: #007bff;
+  /* Blue for Save */
+  color: white;
+}
+
+.remarks-save-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.remarks-save-btn:disabled {
+  background-color: #90baf7;
+  /* Lighter blue when saving */
+  cursor: not-allowed;
+}
+
+/* --- Appointments Section (Rest of CSS is unchanged) --- */
+.appointments-section {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ... (rest of the unchanged CSS) ... */
 
 /* --- Appointments Section --- */
 .appointments-section {

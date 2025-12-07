@@ -3,6 +3,12 @@
   --input-bg: #fff;
   --input-text-color: #000;
   --input-border: #ccc;
+  --remarks-box-bg: #f6f0e2;
+  /* Beige color matching the image */
+  --remarks-header-bg: #5edbd1;
+  /* Teal color matching the image */
+  --remarks-border-color: #2c2c2c;
+  --remarks-text-color: #2c2c2c;
 }
 
 /* Dark mode variables */
@@ -11,82 +17,35 @@
     --input-bg: #222;
     --input-text-color: #eee;
     --input-border: #555;
+    /* Adjusted for dark mode */
+    --remarks-box-bg: #3a362f;
+    --remarks-header-bg: #3a8e88;
+    --remarks-border-color: #1a1a1a;
+    --remarks-text-color: #eee;
   }
 }
 
-/* Base styles for the appointment input */
-.appointment-input {
-  width: 100%;
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 4px;
-  border: 1px solid var(--input-border);
-  background-color: var(--input-bg);
-  color: var(--input-text-color);
-  box-sizing: border-box;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-/* Focus styles */
-.appointment-input:focus {
-  outline: none;
-  border-color: #4a90e2;
-  box-shadow: 0 0 3px 1px rgba(74, 144, 226, 0.5);
-}
-
-/* Custom date picker styles to hide native icon and add custom icon */
-.custom-date-picker {
-  appearance: none;
-  -webkit-appearance: none;
-  position: relative;
-  padding-right: 40px;
-  /* space for icon */
-  cursor: pointer;
-}
-
-/* Hide native calendar icon but keep functionality */
-.custom-date-picker::-webkit-calendar-picker-indicator {
-  opacity: 0;
-  position: absolute;
-  right: 10px;
-  width: 24px;
-  height: 100%;
-  cursor: pointer;
-}
-
-/* Custom calendar icon */
-.custom-date-picker::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-  background-image: url('data:image/svg+xml;utf8,<svg fill="%23000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h5v5H7z"/></svg>');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-
-@media (prefers-color-scheme: dark) {
-  .custom-date-picker::after {
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23eee" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h5v5H7z"/></svg>');
-  }
-}
-
+/* Page Container - Crucial for Remarks Positioning */
 .instructors-profile-page {
-  max-width: 600px;
+  position: relative;
+  max-width: 900px;
   margin: 40px auto;
   padding: 20px;
   background-color: var(--background-color);
   color: var(--text-color);
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  min-height: 500px;
 }
 
+/* New Wrapper to keep Profile Content Centered */
+.profile-main-content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Image Container */
 .profile-image-container {
   position: relative;
   display: inline-block;
@@ -100,6 +59,7 @@
   margin-bottom: 20px;
 }
 
+/* Status Indicator Dot */
 .indicator1 {
   position: absolute;
   bottom: 25px;
@@ -114,26 +74,17 @@
 
 .indicator1.inside {
   background-color: #4CAF50;
-  /* Green */
 }
 
 .indicator1.outside {
   background-color: #F44336;
-  /* Red */
 }
 
 .indicator1.in-class {
   background-color: #ffc107;
-  /* Amber */
 }
 
-.instructors-profile-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px 0;
-}
-
+/* Status Text Badge */
 .status {
   padding: 8px 16px;
   font-size: 14px;
@@ -142,7 +93,85 @@
   border-radius: 4px;
   transition: background-color 0.3s ease;
   display: inline-block;
-  margin: 5px 0;
+  margin: 5px 0 30px 0;
+}
+
+.status-inside {
+  color: #e6f4ea;
+  background-color: #4CAF50;
+}
+
+.status-outside {
+  color: #fbe9e7;
+  background-color: #F44336;
+}
+
+.status-in-class {
+  color: #e3f2fd;
+  background-color: #ffc107;
+}
+
+/* =========================================
+   UPDATED: Remarks Style - Absolute Upper Right (Further Reduced Width)
+   ========================================= */
+.remarks-container {
+  position: absolute;
+  /* Takes it out of the normal flow */
+  top: 30px;
+  /* Pushes it down from the top edge */
+  right: 20px;
+  /* Positions it on the right edge */
+
+  background-color: var(--remarks-box-bg);
+  border: 2px solid var(--remarks-border-color);
+  padding: 25px 20px 20px 20px;
+
+  /* Size Restriction */
+  width: 100%;
+  max-width: 200px;
+  /* Reduced to 200px (was 250px) */
+
+  border-radius: 4px;
+  text-align: left;
+  color: var(--remarks-text-color);
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+.remarks-header {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--remarks-header-bg);
+  border: 2px solid var(--remarks-border-color);
+  padding: 4px 15px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  color: #2c2c2c;
+}
+
+.remarks-list {
+  margin: 0;
+  padding-left: 15px;
+  list-style-type: disc;
+}
+
+.remarks-list li {
+  margin-bottom: 8px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+/* ========================================= */
+
+.instructors-profile-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
 }
 
 .profile-button {
@@ -160,33 +189,6 @@
 
 .profile-button:hover {
   background-color: var(--button-hover-bg);
-}
-
-.status-label {
-  cursor: default;
-  user-select: none;
-  padding: 8px 16px;
-  font-size: 14px;
-  border-radius: 4px;
-  display: inline-block;
-  margin: 5px 0;
-  font-weight: bold;
-}
-
-/* Status box colors */
-.status-inside {
-  color: #e6f4ea;
-  background-color: #4CAF50;
-}
-
-.status-outside {
-  color: #fbe9e7;
-  background-color: #F44336;
-}
-
-.status-in-class {
-  color: #e3f2fd;
-  background-color: #ffc107;
 }
 
 /* Modal Styles */
@@ -216,39 +218,6 @@
   text-align: center;
 }
 
-.timetable-container {
-  width: 100%;
-  overflow-x: auto;
-  margin: 20px 0;
-}
-
-.timetable {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: var(--background-color);
-  color: var(--text-color);
-}
-
-.timetable th,
-.timetable td {
-  border: 1px solid var(--input-border);
-  padding: 8px;
-  text-align: center;
-}
-
-.timetable th {
-  background-color: var(--form-bg);
-  font-weight: bold;
-}
-
-.timetable td {
-  background-color: var(--background-color);
-}
-
-.modal-close-button {
-  margin-top: 20px;
-}
-
 /* Appointment Form Styles */
 .form-group {
   margin-bottom: 15px;
@@ -276,7 +245,6 @@
   outline: none;
 }
 
-/* Modal Buttons Container */
 .modal-buttons {
   display: flex;
   justify-content: center;
@@ -290,32 +258,41 @@
   text-align: center;
 }
 
-.timetable th,
-.timetable td {
-  border: 1px solid var(--input-border);
-  padding: 12px 8px;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  line-height: 1.4;
-  box-sizing: border-box;
-}
-
-.modal-content {
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.modal-close-button {
-  margin-top: 20px;
-  padding: 8px 16px;
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  border-radius: 4px;
+/* Custom Date Picker Styles */
+.custom-date-picker {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  padding-right: 40px;
   cursor: pointer;
 }
 
-.modal-close-button:hover {
-  background-color: #388E3C;
+.custom-date-picker::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 10px;
+  width: 24px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.custom-date-picker::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h5v5H7z"/></svg>');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .custom-date-picker::after {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23eee" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM7 12h5v5H7z"/></svg>');
+  }
 }
